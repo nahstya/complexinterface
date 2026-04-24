@@ -79,3 +79,13 @@
   -webkit-font-feature-settings: 'liga';
   -webkit-font-smoothing: antialiased;
 }
+
+.mobile-wrapper {
+  max-width: 430px; /* Типичная ширина современного смартфона */
+  height: 100vh;
+  margin: 0 auto; /* Центрирование на экране */
+  position: relative; /* Важно для позиционирования панелей */
+  overflow-y: auto; /* Прокрутка только внутри "телефона" */
+  background-color: #ffffff;
+  box-shadow: 0 0 20px rgba(0,0,0,0.1); /* Опционально: тень для объема */
+}
