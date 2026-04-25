@@ -91,7 +91,7 @@ const Layout = ({
   setIsSyncing: (b: boolean) => void
 }) => {
   return (
-    <div className="min-h-screen bg-surface flex flex-col max-w-md mx-auto relative overflow-hidden shadow-2xl">
+    <div className="h-screen md:h-[812px] md:my-8 bg-surface flex flex-col max-w-md mx-auto relative overflow-hidden shadow-2xl md:rounded-[3rem] border-8 border-transparent">
       {/* Header */}
       <header className="absolute top-0 left-0 right-0 z-50 bg-surface/80 backdrop-blur-lg px-6 h-16 flex items-center justify-between border-b border-outline-variant/10">
         <div className="flex items-center gap-4">
@@ -131,7 +131,7 @@ const Layout = ({
       </main>
 
       {/* Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl px-4 pb-8 pt-3 flex justify-around items-center rounded-t-[2.5rem] shadow-[0px_-8px_24px_rgba(0,0,0,0.04)]">
+      <nav className="absolute bottom-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl px-4 pb-8 pt-3 flex justify-around items-center rounded-t-[2.5rem] shadow-[0px_-8px_24px_rgba(0,0,0,0.04)]">
         <button 
           onClick={() => setTab('DASHBOARD')}
           className={`flex flex-col items-center gap-1.5 px-6 py-2 rounded-2xl transition-all ${activeTab === 'DASHBOARD' ? 'bg-emerald-50 text-emerald-700' : 'text-slate-400'}`}
