@@ -85,87 +85,70 @@ const Layout = ({
 }: { 
   children: React.ReactNode, 
   activeTab: string, 
-  setTab: (t: string) => void, // Исправил Screen на string для универсальности
+  setTab: (t: any) => void, 
   title?: string, 
   onBack?: () => void,
   isSyncing: boolean,
   setIsSyncing: (b: boolean) => void
 }) => {
   return (
-    /* Внешний контейнер на весь экран для фона */
-    <div className="min-h-screen bg-slate-900 md:py-8 flex justify-center items-center">
+    /* ОДИН основной контейнер. mx-auto центрирует его, w-full делает на весь экран мобилки */
+    <div className="relative flex flex-col w-full max-w-md mx-auto min-h-screen bg-surface shadow-2xl overflow-hidden">
       
-      /* Основной фрейм приложения */
-      <div className="relative w-full max-w-md h-screen md:h-[812px] bg-surface flex flex-col overflow-hidden shadow-2xl md:rounded-[3rem] border-0 md:border-8 border-transparent">
-        
-        {/* Header - теперь фиксирован внутри фрейма */}
-        <header className="absolute top-0 left-0 right-0 z-50 bg-surface/80 backdrop-blur-lg px-6 h-16 flex items-center justify-between border-b border-outline-variant/10">
-          <div className="flex items-center gap-4">
-            {onBack && (
-              <button onClick={onBack} className="p-2 -ml-2 hover:bg-surface-container transition-colors rounded-full text-primary">
-                <ArrowLeft size={20} />
+      {/* Header — фиксированный сверху */}
+      <header className="shrink-0 z-50 bg-surface/80 backdrop-blur-lg px-6 h-16 flex items-center justify-between border-b border-outline-variant/10">
+        <div className="flex items-center gap-4">
+          {onBack && (
+            <button onClick={onBack} className="p-2 -ml-2 hover:bg-surface-container rounded-full text-primary">
+              <ArrowLeft size={20} />
+            </button>
+          )}
+          <h1 className="font-headline font-bold text-lg text-on-surface">{title || "Trust Lab"}</h1>
+        </div>
+        <div className="flex items-center gap-2">
+          {activeTab === 'DASHBOARD' && (
+            <div className="flex items-center gap-2">
+              <button 
+                onClick={() => setIsSyncing(!isSyncing)}
+                className={`p-2 rounded-full ${isSyncing ? 'animate-spin text-primary' : 'text-outline'}`}
+              >
+                <Undo size={20} />
               </button>
-            )}
-            <h1 className="font-headline font-bold text-lg text-on-surface tracking-tight">{title || "Trust Lab"}</h1>
-          </div>
-          <div className="flex items-center gap-2">
-            {activeTab === 'DASHBOARD' && (
-              <div className="flex items-center gap-2">
-                <button 
-                  onClick={() => setIsSyncing(!isSyncing)}
-                  className={`p-2 rounded-full hover:bg-surface-container transition-all ${isSyncing ? 'animate-spin text-primary' : 'text-outline'}`}
-                >
-                  <Undo size={20} />
-                </button>
-                <div className="w-8 h-8 rounded-full overflow-hidden bg-surface-container shadow-sm border border-outline-variant/20">
-                  <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="User" />
-                </div>
+              <div className="w-8 h-8 rounded-full overflow-hidden bg-surface-container border border-outline-variant/20">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="User" />
               </div>
-            )}
-            {activeTab !== 'DASHBOARD' && <MoreVertical size={20} className="text-outline" />}
-          </div>
-        </header>
+            </div>
+          )}
+        </div>
+      </header>
 
-        {/* Main Content */}
-        <main className="flex-1 pt-20 pb-28 px-4 overflow-y-auto no-scrollbar">
-          {/* Информационная панель */}
-          <div className="flex bg-surface-container-high/50 p-1 rounded-full mb-6 border border-outline-variant/10">
-            <div className="flex-1 text-[8px] font-mono text-outline flex items-center justify-center border-r border-outline-variant/20 tracking-tighter uppercase p-1">CPU: 4%</div>
-            <div className="flex-1 text-[8px] font-mono text-primary flex items-center justify-center border-r border-outline-variant/20 tracking-tighter uppercase p-1">NET: 1.4KB/S</div>
-            <div className="flex-1 text-[8px] font-mono text-tertiary flex items-center justify-center tracking-tighter uppercase p-1">RSSI: -64DBM</div>
-          </div>
-          
-          {children}
-        </main>
+      {/* Основной контент — занимает все свободное место */}
+      <main className="flex-1 overflow-y-auto no-scrollbar px-4 pt-4 pb-32">
+        {/* Статистика сверху */}
+        <div className="flex bg-surface-container-high/50 p-2 rounded-2xl mb-6 border border-outline-variant/10">
+          <div className="flex-1 text-[8px] font-mono text-outline text-center border-r border-outline-variant/20 uppercase">CPU: 4%</div>
+          <div className="flex-1 text-[8px] font-mono text-primary text-center border-r border-outline-variant/20 uppercase">NET: 1.4KB/S</div>
+          <div className="flex-1 text-[8px] font-mono text-tertiary text-center uppercase">RSSI: -64DBM</div>
+        </div>
+        
+        {children}
+      </main>
 
-        {/* Navigation */}
-        <nav className="absolute bottom-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-xl px-4 pb-6 pt-3 flex justify-around items-center rounded-t-[2.5rem] shadow-[0px_-8px_24px_rgba(0,0,0,0.06)]">
-          <button 
-            onClick={() => setTab('DASHBOARD')}
-            className={`flex flex-col items-center gap-1 px-4 py-2 rounded-2xl transition-all ${activeTab === 'DASHBOARD' ? 'bg-emerald-50 text-emerald-700' : 'text-slate-400'}`}
-          >
-            <Home size={24} strokeWidth={activeTab === 'DASHBOARD' ? 2.5 : 2} />
-            <span className="text-[10px] font-bold uppercase tracking-tighter">Главная</span>
-          </button>
-          
-          <button 
-            onClick={() => setTab('NOTIFICATIONS')}
-            className={`flex flex-col items-center gap-1 px-4 py-2 rounded-2xl transition-all ${activeTab === 'NOTIFICATIONS' ? 'bg-emerald-50 text-emerald-700' : 'text-slate-400'}`}
-          >
-            <Bell size={24} strokeWidth={activeTab === 'NOTIFICATIONS' ? 2.5 : 2} />
-            <span className="text-[10px] font-bold uppercase tracking-tighter">События</span>
-          </button>
-
-          <button 
-            onClick={() => setTab('SETTINGS')}
-            className={`flex flex-col items-center gap-1 px-4 py-2 rounded-2xl transition-all ${activeTab === 'SETTINGS' ? 'bg-emerald-50 text-emerald-700' : 'text-slate-400'}`}
-          >
-            <Settings size={24} strokeWidth={activeTab === 'SETTINGS' ? 2.5 : 2} />
-            <span className="text-[10px] font-bold uppercase tracking-tighter">Опции</span>
-          </button>
-        </nav>
-
-      </div>
+      {/* Навигация — фиксированная снизу */}
+      <nav className="absolute bottom-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-xl px-6 pb-8 pt-4 flex justify-between items-center rounded-t-[2.5rem] shadow-[0px_-10px_30px_rgba(0,0,0,0.08)]">
+        <button onClick={() => setTab('DASHBOARD')} className={`flex flex-col items-center gap-1 ${activeTab === 'DASHBOARD' ? 'text-emerald-600' : 'text-slate-400'}`}>
+          <Home size={26} />
+          <span className="text-[10px] font-bold uppercase">Главная</span>
+        </button>
+        <button onClick={() => setTab('NOTIFICATIONS')} className={`flex flex-col items-center gap-1 ${activeTab === 'NOTIFICATIONS' ? 'text-emerald-600' : 'text-slate-400'}`}>
+          <Bell size={26} />
+          <span className="text-[10px] font-bold uppercase">События</span>
+        </button>
+        <button onClick={() => setTab('SETTINGS')} className={`flex flex-col items-center gap-1 ${activeTab === 'SETTINGS' ? 'text-emerald-600' : 'text-slate-400'}`}>
+          <Settings size={26} />
+          <span className="text-[10px] font-bold uppercase">Настройки</span>
+        </button>
+      </nav>
     </div>
   );
 };
