@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Home, 
+  LogOut,
   Bell, 
   Settings, 
   ArrowLeft, 
@@ -91,6 +92,7 @@ const Layout = ({
   setIsSyncing: (b: boolean) => void
 }) => {
   return (
+    <div className="min-h-screen bg-surface flex flex-col max-w-md mx-auto relative overflow-hidden shadow-2xl">
     <div className="h-screen md:h-[812px] md:my-8 bg-surface flex flex-col max-w-md mx-auto relative overflow-hidden shadow-2xl md:rounded-[3rem] border-8 border-transparent">
       {/* Header */}
       <header className="absolute top-0 left-0 right-0 z-50 bg-surface/80 backdrop-blur-lg px-6 h-16 flex items-center justify-between border-b border-outline-variant/10">
@@ -131,6 +133,7 @@ const Layout = ({
       </main>
 
       {/* Navigation */}
+      <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl px-4 pb-8 pt-3 flex justify-around items-center rounded-t-[2.5rem] shadow-[0px_-8px_24px_rgba(0,0,0,0.04)]">
       <nav className="absolute bottom-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl px-4 pb-8 pt-3 flex justify-around items-center rounded-t-[2.5rem] shadow-[0px_-8px_24px_rgba(0,0,0,0.04)]">
         <button 
           onClick={() => setTab('DASHBOARD')}
@@ -297,7 +300,7 @@ export default function App() {
               Естеств.
             </button>
           </div>
-          
+
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-lg bg-primary-fixed/20 flex items-center justify-center text-primary"><Tv size={20} /></div>
@@ -498,7 +501,7 @@ export default function App() {
             <span className="text-sm ml-1 opacity-60">%</span>
           </div>
         </div>
-        
+
         <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-widest text-outline mb-2">
             <span>Тип шкалы</span>
             <div className="flex bg-surface-container-low rounded-lg p-1 gap-1">
@@ -593,7 +596,7 @@ export default function App() {
                 <div className="w-4 h-4 bg-white rounded-full translate-x-6"></div>
               </div>
            </div>
-           
+
            <div className="bg-surface-container-low p-4 rounded-xl font-mono text-[11px] space-y-2">
               <div className="flex gap-2">
                 <span className="text-primary font-bold">ЕСЛИ</span>
@@ -612,7 +615,7 @@ export default function App() {
                 </div>
               </div>
            </div>
-           
+
            <div className="flex justify-end pt-2">
               <button 
                 onClick={() => setScreen('AUTOMATION_BUILDER')}
@@ -625,7 +628,7 @@ export default function App() {
 
         <div className="mt-4 bg-surface-container-lowest rounded-2xl p-6 border border-outline-variant/10 flex justify-between items-center">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-secondary/5 flex items-center justify-center text-secondary">< LogOut size={20} /></div>
+              <div className="w-10 h-10 rounded-xl bg-secondary/5 flex items-center justify-center text-secondary"><LogOut size={20} /></div>
               <div>
                 <h3 className="font-bold">Я ушел</h3>
                 <p className="text-[10px] text-outline">Безопасность и экономия</p>
@@ -856,7 +859,7 @@ export default function App() {
              <p className="text-[10px] text-outline font-mono italic">NO OP: KEEP_CURRENT_STATE</p>
           </div>
         </section>
-        
+
         <div className="pt-4 flex flex-col gap-3">
           <button 
             disabled={!automationConfig.ifDevice || !automationConfig.thenDevice}
@@ -948,7 +951,7 @@ export default function App() {
       'AWAY_DEACTIVATE_6',
       'AWAY_DEACTIVATE_7',
     ];
-    
+
     const currentIndex = steps.indexOf(screen);
     const progress = ((currentIndex + 1) / steps.length) * 100;
 
@@ -1130,7 +1133,7 @@ export default function App() {
           className="bg-transparent border-none p-0 focus:ring-0 text-sm text-outline placeholder:text-outline/40 w-full font-mono"
         />
       </div>
-      
+
       <div>
         <h3 className="text-[10px] font-bold text-outline uppercase tracking-widest mb-6">Категории</h3>
         <div className="grid grid-cols-2 gap-4">
@@ -1182,7 +1185,7 @@ export default function App() {
             <p>1. ИНКАПСУЛЯЦИЯ: Настоящим подтверждается, что ретрансляция пакетов осуществляется через виртуализованный шлюз архитектуры Veridian-Mesh. Пользователь обязуется не препятствовать инспекции трафика Deep Packet Inspection (DPI) для верификации консистентности реестра.</p>
             <p>2. ТЕЛЕМЕТРИЯ: Сбор метрик вольтажа (V_IN), температуры чипа (T_DIE) и джиттера тактового генератора производится ежесекундно. Данные буферизуются в энергонезависимой памяти FLASH_BLOCK_03 и отправляются по защищенному каналу TLS 1.3 (+SHA384).</p>
             <p>3. ХЭШ-ПРОВЕРКА: Любое расхождение в контрольных суммах CRC-32 между локальным узлом и облачным координатором приводит к немедленному переводу устройства в состояние FAIL_SAFE.</p>
-            
+
             <div className="pt-4 space-y-3 border-t border-outline-variant/10">
                <label className="flex items-start gap-3 cursor-pointer group">
                   <div className={`mt-0.5 w-4 h-4 rounded border flex items-center justify-center transition-colors ${consents.data ? 'bg-primary border-primary' : 'border-outline/30 group-hover:border-primary/50'}`} onClick={() => setConsents(c => ({...c, data: !c.data}))}>
@@ -1312,7 +1315,7 @@ export default function App() {
 
         <div className="space-y-6">
           <h3 className="text-sm font-bold">Настройки подключения (Expert Mode)</h3>
-          
+
           <div className="bg-surface-container-low p-5 rounded-2xl space-y-4">
              <div className="space-y-2">
                 <p className="text-[9px] font-bold text-outline">ЧАСТОТА МОДУЛЯ WI-FI:</p>
