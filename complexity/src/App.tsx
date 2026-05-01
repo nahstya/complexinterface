@@ -85,16 +85,20 @@ const Layout = ({
 }: { 
   children: React.ReactNode, 
   activeTab: string, 
-  setTab: (t: Screen) => void, 
+  setTab: (t: string) => void, // Исправил Screen на string для универсальности
   title?: string, 
   onBack?: () => void,
   isSyncing: boolean,
   setIsSyncing: (b: boolean) => void
 }) => {
   return (
-    <div className="min-h-screen bg-surface flex flex-col max-w-md mx-auto relative overflow-hidden shadow-2xl">
-      <div className="h-screen md:h-[812px] md:my-8 bg-surface flex flex-col max-w-md mx-auto relative overflow-hidden shadow-2xl md:rounded-[3rem] border-8 border-transparent">
-        {/* Header */}
+    /* Внешний контейнер на весь экран для фона */
+    <div className="min-h-screen bg-slate-900 md:py-8 flex justify-center items-center">
+      
+      /* Основной фрейм приложения */
+      <div className="relative w-full max-w-md h-screen md:h-[812px] bg-surface flex flex-col overflow-hidden shadow-2xl md:rounded-[3rem] border-0 md:border-8 border-transparent">
+        
+        {/* Header - теперь фиксирован внутри фрейма */}
         <header className="absolute top-0 left-0 right-0 z-50 bg-surface/80 backdrop-blur-lg px-6 h-16 flex items-center justify-between border-b border-outline-variant/10">
           <div className="flex items-center gap-4">
             {onBack && (
@@ -124,43 +128,47 @@ const Layout = ({
 
         {/* Main Content */}
         <main className="flex-1 pt-20 pb-28 px-4 overflow-y-auto no-scrollbar">
+          {/* Информационная панель */}
           <div className="flex bg-surface-container-high/50 p-1 rounded-full mb-6 border border-outline-variant/10">
-            <div className="flex-1 text-[8px] font-mono text-outline flex items-center justify-center border-r border-outline-variant/20 tracking-tighter uppercase p-1">CPU: 4% @ 1.4GHz</div>
+            <div className="flex-1 text-[8px] font-mono text-outline flex items-center justify-center border-r border-outline-variant/20 tracking-tighter uppercase p-1">CPU: 4%</div>
             <div className="flex-1 text-[8px] font-mono text-primary flex items-center justify-center border-r border-outline-variant/20 tracking-tighter uppercase p-1">NET: 1.4KB/S</div>
             <div className="flex-1 text-[8px] font-mono text-tertiary flex items-center justify-center tracking-tighter uppercase p-1">RSSI: -64DBM</div>
           </div>
+          
           {children}
         </main>
 
-        {/* Navigation - FIXED: Removed duplicate nav element */}
-        <nav className="absolute bottom-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl px-4 pb-8 pt-3 flex justify-around items-center rounded-t-[2.5rem] shadow-[0px_-8px_24px_rgba(0,0,0,0.04)]">
+        {/* Navigation */}
+        <nav className="absolute bottom-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-xl px-4 pb-6 pt-3 flex justify-around items-center rounded-t-[2.5rem] shadow-[0px_-8px_24px_rgba(0,0,0,0.06)]">
           <button 
             onClick={() => setTab('DASHBOARD')}
-            className={`flex flex-col items-center gap-1.5 px-6 py-2 rounded-2xl transition-all ${activeTab === 'DASHBOARD' ? 'bg-emerald-50 text-emerald-700' : 'text-slate-400'}`}
+            className={`flex flex-col items-center gap-1 px-4 py-2 rounded-2xl transition-all ${activeTab === 'DASHBOARD' ? 'bg-emerald-50 text-emerald-700' : 'text-slate-400'}`}
           >
             <Home size={24} strokeWidth={activeTab === 'DASHBOARD' ? 2.5 : 2} />
-            <span className="text-[10px] font-bold uppercase tracking-widest">Главная</span>
+            <span className="text-[10px] font-bold uppercase tracking-tighter">Главная</span>
           </button>
+          
           <button 
             onClick={() => setTab('NOTIFICATIONS')}
-            className={`flex flex-col items-center gap-1.5 px-6 py-2 rounded-2xl transition-all ${activeTab === 'NOTIFICATIONS' ? 'bg-emerald-50 text-emerald-700' : 'text-slate-400'}`}
+            className={`flex flex-col items-center gap-1 px-4 py-2 rounded-2xl transition-all ${activeTab === 'NOTIFICATIONS' ? 'bg-emerald-50 text-emerald-700' : 'text-slate-400'}`}
           >
             <Bell size={24} strokeWidth={activeTab === 'NOTIFICATIONS' ? 2.5 : 2} />
-            <span className="text-[10px] font-bold uppercase tracking-widest">Уведомления</span>
+            <span className="text-[10px] font-bold uppercase tracking-tighter">События</span>
           </button>
+
           <button 
             onClick={() => setTab('SETTINGS')}
-            className={`flex flex-col items-center gap-1.5 px-6 py-2 rounded-2xl transition-all ${activeTab === 'SETTINGS' ? 'bg-emerald-50 text-emerald-700' : 'text-slate-400'}`}
+            className={`flex flex-col items-center gap-1 px-4 py-2 rounded-2xl transition-all ${activeTab === 'SETTINGS' ? 'bg-emerald-50 text-emerald-700' : 'text-slate-400'}`}
           >
             <Settings size={24} strokeWidth={activeTab === 'SETTINGS' ? 2.5 : 2} />
-            <span className="text-[10px] font-bold uppercase tracking-widest">Настройки</span>
+            <span className="text-[10px] font-bold uppercase tracking-tighter">Опции</span>
           </button>
         </nav>
+
       </div>
     </div>
   );
 };
-
 export default function App() {
   const [speakerAdded, setSpeakerAdded] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
