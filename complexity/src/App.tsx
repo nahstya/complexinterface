@@ -625,7 +625,7 @@ export default function App() {
 
         <div className="mt-4 bg-surface-container-lowest rounded-2xl p-6 border border-outline-variant/10 flex justify-between items-center">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-secondary/5 flex items-center justify-center text-secondary"><LogOut size={20} /></div>
+              <div className="w-10 h-10 rounded-xl bg-secondary/5 flex items-center justify-center text-secondary">< LogOut size={20} /></div>
               <div>
                 <h3 className="font-bold">Я ушел</h3>
                 <p className="text-[10px] text-outline">Безопасность и экономия</p>
