@@ -3,7 +3,6 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Home, 
-  LogOut,
   Bell, 
   Settings, 
   ArrowLeft, 
@@ -85,73 +84,82 @@ const Layout = ({
 }: { 
   children: React.ReactNode, 
   activeTab: string, 
-  setTab: (t: any) => void, 
+  setTab: (t: Screen) => void, 
   title?: string, 
   onBack?: () => void,
   isSyncing: boolean,
   setIsSyncing: (b: boolean) => void
 }) => {
   return (
-    /* ОДИН основной контейнер. mx-auto центрирует его, w-full делает на весь экран мобилки */
-    <div className="relative flex flex-col w-full max-w-md mx-auto min-h-screen bg-surface shadow-2xl overflow-hidden">
-      
-      {/* Header — фиксированный сверху */}
-      <header className="shrink-0 z-50 bg-surface/80 backdrop-blur-lg px-6 h-16 flex items-center justify-between border-b border-outline-variant/10">
+    <div className="min-h-screen bg-surface flex flex-col max-w-md mx-auto relative overflow-hidden shadow-2xl">
+    <div className="h-screen md:h-[812px] md:my-8 bg-surface flex flex-col max-w-md mx-auto relative overflow-hidden shadow-2xl md:rounded-[3rem] border-8 border-transparent">
+      {/* Header */}
+      <header className="absolute top-0 left-0 right-0 z-50 bg-surface/80 backdrop-blur-lg px-6 h-16 flex items-center justify-between border-b border-outline-variant/10">
         <div className="flex items-center gap-4">
           {onBack && (
-            <button onClick={onBack} className="p-2 -ml-2 hover:bg-surface-container rounded-full text-primary">
+            <button onClick={onBack} className="p-2 -ml-2 hover:bg-surface-container transition-colors rounded-full text-primary">
               <ArrowLeft size={20} />
             </button>
           )}
-          <h1 className="font-headline font-bold text-lg text-on-surface">{title || "Trust Lab"}</h1>
+          <h1 className="font-headline font-bold text-lg text-on-surface tracking-tight">{title || "Trust Lab"}</h1>
         </div>
         <div className="flex items-center gap-2">
           {activeTab === 'DASHBOARD' && (
             <div className="flex items-center gap-2">
               <button 
                 onClick={() => setIsSyncing(!isSyncing)}
-                className={`p-2 rounded-full ${isSyncing ? 'animate-spin text-primary' : 'text-outline'}`}
+                className={`p-2 rounded-full hover:bg-surface-container transition-all ${isSyncing ? 'animate-spin text-primary' : 'text-outline'}`}
               >
                 <Undo size={20} />
               </button>
-              <div className="w-8 h-8 rounded-full overflow-hidden bg-surface-container border border-outline-variant/20">
+              <div className="w-8 h-8 rounded-full overflow-hidden bg-surface-container shadow-sm border border-outline-variant/20">
                 <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="User" />
               </div>
             </div>
           )}
+          {activeTab !== 'DASHBOARD' && <MoreVertical size={20} className="text-outline" />}
         </div>
       </header>
 
-      {/* Основной контент — занимает все свободное место */}
-      <main className="flex-1 overflow-y-auto no-scrollbar px-4 pt-4 pb-32">
-        {/* Статистика сверху */}
-        <div className="flex bg-surface-container-high/50 p-2 rounded-2xl mb-6 border border-outline-variant/10">
-          <div className="flex-1 text-[8px] font-mono text-outline text-center border-r border-outline-variant/20 uppercase">CPU: 4%</div>
-          <div className="flex-1 text-[8px] font-mono text-primary text-center border-r border-outline-variant/20 uppercase">NET: 1.4KB/S</div>
-          <div className="flex-1 text-[8px] font-mono text-tertiary text-center uppercase">RSSI: -64DBM</div>
+      {/* Main Content */}
+      <main className="flex-1 pt-20 pb-28 px-4 overflow-y-auto no-scrollbar">
+        <div className="flex bg-surface-container-high/50 p-1 rounded-full mb-6 border border-outline-variant/10">
+          <div className="flex-1 text-[8px] font-mono text-outline flex items-center justify-center border-r border-outline-variant/20 tracking-tighter uppercase p-1">CPU: 4% @ 1.4GHz</div>
+          <div className="flex-1 text-[8px] font-mono text-primary flex items-center justify-center border-r border-outline-variant/20 tracking-tighter uppercase p-1">NET: 1.4KB/S</div>
+          <div className="flex-1 text-[8px] font-mono text-tertiary flex items-center justify-center tracking-tighter uppercase p-1">RSSI: -64DBM</div>
         </div>
-        
         {children}
       </main>
 
-      {/* Навигация — фиксированная снизу */}
-      <nav className="absolute bottom-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-xl px-6 pb-8 pt-4 flex justify-between items-center rounded-t-[2.5rem] shadow-[0px_-10px_30px_rgba(0,0,0,0.08)]">
-        <button onClick={() => setTab('DASHBOARD')} className={`flex flex-col items-center gap-1 ${activeTab === 'DASHBOARD' ? 'text-emerald-600' : 'text-slate-400'}`}>
-          <Home size={26} />
-          <span className="text-[10px] font-bold uppercase">Главная</span>
+      {/* Navigation */}
+      <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl px-4 pb-8 pt-3 flex justify-around items-center rounded-t-[2.5rem] shadow-[0px_-8px_24px_rgba(0,0,0,0.04)]">
+      <nav className="absolute bottom-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl px-4 pb-8 pt-3 flex justify-around items-center rounded-t-[2.5rem] shadow-[0px_-8px_24px_rgba(0,0,0,0.04)]">
+        <button 
+          onClick={() => setTab('DASHBOARD')}
+          className={`flex flex-col items-center gap-1.5 px-6 py-2 rounded-2xl transition-all ${activeTab === 'DASHBOARD' ? 'bg-emerald-50 text-emerald-700' : 'text-slate-400'}`}
+        >
+          <Home size={24} strokeWidth={activeTab === 'DASHBOARD' ? 2.5 : 2} />
+          <span className="text-[10px] font-bold uppercase tracking-widest">Главная</span>
         </button>
-        <button onClick={() => setTab('NOTIFICATIONS')} className={`flex flex-col items-center gap-1 ${activeTab === 'NOTIFICATIONS' ? 'text-emerald-600' : 'text-slate-400'}`}>
-          <Bell size={26} />
-          <span className="text-[10px] font-bold uppercase">События</span>
+        <button 
+          onClick={() => setTab('NOTIFICATIONS')}
+          className={`flex flex-col items-center gap-1.5 px-6 py-2 rounded-2xl transition-all ${activeTab === 'NOTIFICATIONS' ? 'bg-emerald-50 text-emerald-700' : 'text-slate-400'}`}
+        >
+          <Bell size={24} strokeWidth={activeTab === 'NOTIFICATIONS' ? 2.5 : 2} />
+          <span className="text-[10px] font-bold uppercase tracking-widest">Уведомления</span>
         </button>
-        <button onClick={() => setTab('SETTINGS')} className={`flex flex-col items-center gap-1 ${activeTab === 'SETTINGS' ? 'text-emerald-600' : 'text-slate-400'}`}>
-          <Settings size={26} />
-          <span className="text-[10px] font-bold uppercase">Настройки</span>
+        <button 
+          onClick={() => setTab('SETTINGS')}
+          className={`flex flex-col items-center gap-1.5 px-6 py-2 rounded-2xl transition-all ${activeTab === 'SETTINGS' ? 'bg-emerald-50 text-emerald-700' : 'text-slate-400'}`}
+        >
+          <Settings size={24} strokeWidth={activeTab === 'SETTINGS' ? 2.5 : 2} />
+          <span className="text-[10px] font-bold uppercase tracking-widest">Настройки</span>
         </button>
       </nav>
     </div>
   );
 };
+
 export default function App() {
   const [speakerAdded, setSpeakerAdded] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
@@ -236,7 +244,7 @@ export default function App() {
               <div className="w-10 h-10 rounded-lg bg-primary-fixed/20 flex items-center justify-center text-primary"><Lock size={20} /></div>
               <div>
                 <p className="font-semibold text-sm">Входная дверь</p>
-                <p className="text-[10px] text-outline">закрыта</p>
+                <p className="text-[10px] text-outline">заряд: 87%</p>
               </div>
             </div>
             <span className="text-[10px] font-bold text-primary bg-primary-fixed/30 px-3 py-1 rounded-full">ЗАКРЫТО</span>
@@ -246,7 +254,7 @@ export default function App() {
               <div className="w-10 h-10 rounded-lg bg-primary-fixed/20 flex items-center justify-center text-primary"><Warehouse size={20} /></div>
               <div>
                 <p className="font-semibold text-sm">Гараж</p>
-                <p className="text-[10px] text-outline">открыт</p>
+                <p className="text-[10px] text-outline">закрыт</p>
               </div>
             </div>
             <span className="text-[10px] font-bold text-error bg-error-container/40 px-3 py-1 rounded-full">ОТКРЫТО</span>
@@ -619,7 +627,7 @@ export default function App() {
 
         <div className="mt-4 bg-surface-container-lowest rounded-2xl p-6 border border-outline-variant/10 flex justify-between items-center">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-secondary/5 flex items-center justify-center text-secondary"><LogOut size={20} /></div>
+              <div className="w-10 h-10 rounded-xl bg-secondary/5 flex items-center justify-center text-secondary"><Accessibility size={20} /></div>
               <div>
                 <h3 className="font-bold">Я ушел</h3>
                 <p className="text-[10px] text-outline">Безопасность и экономия</p>
