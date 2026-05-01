@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Home, 
+  LogOut,
   Bell, 
   Settings, 
   ArrowLeft, 
@@ -242,7 +243,7 @@ export default function App() {
               <div className="w-10 h-10 rounded-lg bg-primary-fixed/20 flex items-center justify-center text-primary"><Lock size={20} /></div>
               <div>
                 <p className="font-semibold text-sm">Входная дверь</p>
-                <p className="text-[10px] text-outline">заряд: 87%</p>
+                <p className="text-[10px] text-outline">закрыта</p>
               </div>
             </div>
             <span className="text-[10px] font-bold text-primary bg-primary-fixed/30 px-3 py-1 rounded-full">ЗАКРЫТО</span>
@@ -252,7 +253,7 @@ export default function App() {
               <div className="w-10 h-10 rounded-lg bg-primary-fixed/20 flex items-center justify-center text-primary"><Warehouse size={20} /></div>
               <div>
                 <p className="font-semibold text-sm">Гараж</p>
-                <p className="text-[10px] text-outline">закрыт</p>
+                <p className="text-[10px] text-outline">открыт</p>
               </div>
             </div>
             <span className="text-[10px] font-bold text-error bg-error-container/40 px-3 py-1 rounded-full">ОТКРЫТО</span>
@@ -625,7 +626,7 @@ export default function App() {
 
         <div className="mt-4 bg-surface-container-lowest rounded-2xl p-6 border border-outline-variant/10 flex justify-between items-center">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-secondary/5 flex items-center justify-center text-secondary"><Accessibility size={20} /></div>
+              <div className="w-10 h-10 rounded-xl bg-secondary/5 flex items-center justify-center text-secondary"><LogOut size={20} /></div>
               <div>
                 <h3 className="font-bold">Я ушел</h3>
                 <p className="text-[10px] text-outline">Безопасность и экономия</p>
